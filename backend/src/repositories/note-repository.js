@@ -1,8 +1,10 @@
-import { User } from '../models/user.js';
 import sqlite3 from "sqlite3";
+import { Note } from "../models/note.js";
 
-export class UserService {
+export class NoteRepository {
+
     /**
+     * 
      * @param {sqlite3.Database} db 
      */
     constructor(db) {
@@ -11,65 +13,66 @@ export class UserService {
     }
 
     /**
-     * Adiciona um novo usuário
-     * @param {User} user 
-     * @returns {Promise<User>}
+     * Adiciona uma nova nota
+     * @param {Note} note 
+     * @returns {Promise<Note>}
      */
-    async create(user) {
+    async create(note) {
         return new Promise((resolve, reject) => {
-            this.db.run('INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)', [user.nome, user.email, user.senha], function (err) {
+            this.db.run('INSERT INTO notes (title, description, userId) VALUES (?, ?, ?)', [note.title, note.description, note.userId], function (err) {
                 if (err) {
                     reject(err);
                 } else {
-                    user.id = this.lastID;
-                    resolve(user)
+                    note.id = this.lastID;
+                    resolve(note);
                 }
             });
         });
     }
 
     /**
-     * Obtem todos os usuários
-     * @returns {Promise<User[]>}
+     * Obtem todas as notas do usuário
+     * @param {Number} userId 
+     * @returns {Promise<Note[]>}
      */
-    async getAll() {
+    async getAll(userId) {
         return new Promise((resolve, reject) => {
-            this.db.all("SELECT * FROM usuarios;", (err, users) => {
+            this.db.all('SELECT * FROM notes WHERE userId = ?', [userId], (err, rows) => {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(users);
+                    resolve(rows);
                 }
             });
         });
     }
 
     /**
-     * Obtem um usuário pelo id
+     * Obtem uma nota por id
      * @param {Number} id 
-     * @returns {Promise<User>}
+     * @returns {Promise<Note>}
      */
     async getById(id) {
         return new Promise((resolve, reject) => {
-            this.db.get(`SELECT * FROM usuarios WHERE id = ?`, [id], (err, user) => {
+            this.db.get('SELECT * FROM notes WHERE id = ?', [id], (err, row) => {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(user);
+                    resolve(row);
                 }
             });
         });
     }
 
     /**
-     * Atualiza um usuário
+     * Atualiza uma nota
      * @param {Number} id 
-     * @param {User} user 
+     * @param {Note} note 
      * @returns {Promise<void>}
      */
-    async update(id, user) {
+    async update(id, note) {
         return new Promise((resolve, reject) => {
-            this.db.run('UPDATE usuarios SET nome = ?, email = ?, senha = ? WHERE id = ?', [user.name, user.email, user.senha, id], (err) => {
+            this.db.run('UPDATE notes SET title = ?, description = ? WHERE id = ?', [note.title, note.description, id], (err) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -80,13 +83,13 @@ export class UserService {
     }
 
     /**
-     * Deleta um usuário
-     * @param {Number} id
+     * Deleta uma nota
+     * @param {Number} id 
      * @returns {Promise<void>}
      */
     async delete(id) {
         return new Promise((resolve, reject) => {
-            this.db.run('DELETE FROM usuarios WHERE id = ?; DELETE FROM notas WHERE usuarios = ?', [id, id], (err) => {
+            this.db.run('DELETE FROM notes WHERE id = ?', [id], (err) => {
                 if (err) {
                     reject(err);
                 } else {

@@ -1,12 +1,12 @@
 export class Note {
-    constructor(titulo, descricao, usuario) {
-        this.titulo = titulo;
-        this.descricao = descricao;
-        this.usuario = usuario;
+    constructor(title, description, userId) {
+        this.title = title;
+        this.description = description;
+        this.userId = userId;
     }
     
     id;
-    titulo;
-    descricao;
-    usuario;
+    title;
+    description;
+    userId;
 }

@@ -4,8 +4,9 @@ import sqlite3 from "sqlite3";
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
-import { MigrationsService } from './services/migrationsService.js';
+import { MigrationsService } from './services/migrations-service.js';
 import { ApiUsers } from './apis/api-users.js';
+import { ApiNotes } from './apis/api-notes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -17,6 +18,9 @@ async function main() {
     configurarApi(db);
 }
 
+/**
+ * @param {sqlite3.Database} db 
+ */
 function configurarApi(db) {
     const hostName = 'localhost';
     const port = 3000;
@@ -24,11 +28,8 @@ function configurarApi(db) {
     app.use(express.json());
     app.use(cors());
 
-    app.get('/', (req, res) => {
-        res.send({ text: 'Hello World!' });
-    });
-
     new ApiUsers(app, db);
+    new ApiNotes(app, db);
 
     app.listen(port, () => {
         console.log(`Server running on: http://${hostName}:${port}`);

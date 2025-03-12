@@ -6,18 +6,18 @@ export class MigrationsService {
 
         this.db = db;
         this.migrations = [
-            new Migration('2021-09-22 Criação da tabela de usuários', `CREATE TABLE IF NOT EXISTS usuarios (
+            new Migration('2021-09-22 Criação da tabela de usuários', `CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                nome TEXT NOT NULL,
+                name TEXT NOT NULL,
                 email TEXT UNIQUE NOT NULL,
-                senha TEXT NOT NULL
+                password TEXT NOT NULL
             );`),
 
-            new Migration('2021-09-22 Criação da tabela de notas', `CREATE TABLE IF NOT EXISTS notas (
+            new Migration('2021-09-22 Criação da tabela de notas', `CREATE TABLE IF NOT EXISTS notes (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                titulo TEXT NOT NULL,
-                descricao TEXT NOT NULL,
-                usuario INTEGER NOT NULL
+                title TEXT NOT NULL,
+                description TEXT NOT NULL,
+                userId INTEGER NOT NULL
             );`)
         ];
     }
