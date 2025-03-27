@@ -15,11 +15,12 @@ export class NoteRepository {
     /**
      * Adiciona uma nova nota
      * @param {Note} note 
+     * @param {Number} userId 
      * @returns {Promise<Note>}
      */
-    async create(note) {
+    async create(note, userId) {
         return new Promise((resolve, reject) => {
-            this.db.run('INSERT INTO notes (title, description, userId) VALUES (?, ?, ?)', [note.title, note.description, note.userId], function (err) {
+            this.db.run('INSERT INTO notes (title, description, userId) VALUES (?, ?, ?)', [note.title, note.description, userId], function (err) {
                 if (err) {
                     reject(err);
                 } else {
@@ -50,11 +51,12 @@ export class NoteRepository {
     /**
      * Obtem uma nota por id
      * @param {Number} id 
+     * @param {Number} userId 
      * @returns {Promise<Note>}
      */
-    async getById(id) {
+    async getById(id, userId) {
         return new Promise((resolve, reject) => {
-            this.db.get('SELECT * FROM notes WHERE id = ?', [id], (err, row) => {
+            this.db.get('SELECT * FROM notes WHERE id = ? AND userId = ?', [id, userId], (err, row) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -68,11 +70,12 @@ export class NoteRepository {
      * Atualiza uma nota
      * @param {Number} id 
      * @param {Note} note 
+     * @param {Number} userId 
      * @returns {Promise<void>}
      */
-    async update(id, note) {
+    async update(id, note, userId) {
         return new Promise((resolve, reject) => {
-            this.db.run('UPDATE notes SET title = ?, description = ? WHERE id = ?', [note.title, note.description, id], (err) => {
+            this.db.run('UPDATE notes SET title = ?, description = ? WHERE id = ? AND userId = ?', [note.title, note.description, id, userId], (err) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -85,11 +88,12 @@ export class NoteRepository {
     /**
      * Deleta uma nota
      * @param {Number} id 
+     * @param {Number} userId 
      * @returns {Promise<void>}
      */
-    async delete(id) {
+    async delete(id, userId) {
         return new Promise((resolve, reject) => {
-            this.db.run('DELETE FROM notes WHERE id = ?', [id], (err) => {
+            this.db.run('DELETE FROM notes WHERE id = ? AND userId = ?', [id, userId], (err) => {
                 if (err) {
                     reject(err);
                 } else {

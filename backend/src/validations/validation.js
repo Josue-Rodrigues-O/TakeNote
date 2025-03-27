@@ -5,12 +5,13 @@ export class Validation {
     constructor(fieldName, fieldValue) {
         this.fieldValue = fieldValue;
         this.fieldName = fieldName;
+        /**@type{Rule[]} */
         this.rules = [];
     }
 
     validate() {
         this.rules.forEach(rule => {
-            if (!rule.func())
+            if (!rule.predicate())
                 throw new Error(rule.message);
         });
     }

@@ -1,6 +1,6 @@
 import sqlite3 from 'sqlite3';
-import { Note } from '../models/note';
-import { NoteRepository } from "../repositories/note-repository";
+import { Note } from '../models/note.js';
+import { NoteRepository } from "../repositories/note-repository.js";
 
 export class NotesService {
 
@@ -18,8 +18,8 @@ export class NotesService {
      * @param {Note} note 
      * @returns {Promise<Note>}
      */
-    async create(note) {
-        return await this._noteRepository.create(note);
+    async create(note, userId) {
+        return await this._noteRepository.create(note, userId);
     }
 
     /**
@@ -36,8 +36,8 @@ export class NotesService {
      * @param {Number} id 
      * @returns {Promise<Note>}
      */
-    async getById(id) {
-        return await this._noteRepository.getById(id);
+    async getById(id, userId) {
+        return await this._noteRepository.getById(id, userId);
     }
 
     /**
@@ -46,8 +46,8 @@ export class NotesService {
      * @param {Note} note 
      * @returns {Promise<void>}
      */
-    async update(id, note) {
-        return await this._noteRepository.update(id, note);
+    async update(id, note, userId) {
+        return await this._noteRepository.update(id, note, userId);
     }
 
     /**
@@ -55,7 +55,7 @@ export class NotesService {
      * @param {Number} id 
      * @returns {Promise<void>}
      */
-    async delete(id) {
-        return await this._noteRepository.delete(id);
+    async delete(id, userId) {
+        return await this._noteRepository.delete(id, userId);
     }
 }

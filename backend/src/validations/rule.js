@@ -2,11 +2,11 @@ export class Rule {
 
     /**
      * 
-     * @param {Function} func função de validação que deve retornar um booleano
+     * @param {Function} predicate função de validação que deve retornar um booleano
      * @param {String} message 
      */
-    constructor(func, message) {
-        this.func = func;
+    constructor(predicate, message) {
+        this.predicate = predicate;
         this.message = message;
     }
 }

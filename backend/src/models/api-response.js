@@ -3,6 +3,7 @@ export class ApiResponse {
     /**
      * @param {String} status 
      * @param {Number} code 
+     * @param {String} message 
      * @param {any} data 
      * @param {Error} error 
      */

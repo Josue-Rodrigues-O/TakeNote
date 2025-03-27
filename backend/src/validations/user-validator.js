@@ -11,28 +11,26 @@ export class UserValidator extends BaseValidator {
     /**
      * @param {User} user 
      */
-    validationForLogin(user) {
+    prepareValidationForLogin(user) {
         this.ruleFor('email', user.email)
             .isRequired()
-            .hasMinLength(5)
-            .hasMaxLength(100)
-            .isEmail();
+            // .hasMinLength(5)
+            // .hasMaxLength(100);
 
         this.ruleFor('password', user.password)
             .isRequired()
-            .hasMinLength(8)
-            .hasMaxLength(100);
+            // .hasMinLength(8)
+            // .hasMaxLength(100);
     }
 
     /**
      * @param {User} user 
      */
-    validationForRegister(user) {
+    prepareValidationForRegister(user) {
         this.ruleFor('email', user.email)
             .isRequired()
             .hasMinLength(5)
-            .hasMaxLength(100)
-            .isEmail();
+            .hasMaxLength(100);
 
         this.ruleFor('password', user.password)
             .isRequired()

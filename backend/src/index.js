@@ -7,6 +7,7 @@ import { fileURLToPath } from 'url';
 import { MigrationsService } from './services/migrations-service.js';
 import { ApiUsers } from './apis/api-users.js';
 import { ApiNotes } from './apis/api-notes.js';
+import { ApiAuth } from './apis/api-auth.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -30,6 +31,7 @@ function configurarApi(db) {
 
     new ApiUsers(app, db);
     new ApiNotes(app, db);
+    new ApiAuth(app, db);
 
     app.listen(port, () => {
         console.log(`Server running on: http://${hostName}:${port}`);
