@@ -24,15 +24,15 @@ export class BaseValidator {
 
     /**
      * 
-     * @returns {string[]}
+     * @returns {string}
      */
     validate() {
-        let errors = [];
+        let errors = '';
         this.validations.forEach(validation => {
             try {
                 validation.validate();
             } catch (error) {
-                errors.push(error.message);
+                errors += error.message + '\n';
             }
         });
         return errors;

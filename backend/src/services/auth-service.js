@@ -23,23 +23,44 @@ export class AuthService {
      */
     async login(user) {
         this._userValidator.prepareValidationForLogin(user);
-        let errors = this._userValidator.validate(user);
-        if (errors.length > 0)
-            throw new Error(errors.toString());
+        let errors = this._userValidator.validate();
+        if (errors)
+            throw new Error(errors);
 
         let userDb = await this._userService.getByEmail(user.email);
-        if (userDb.password !== user.password) {
-            throw new Error('Senha incorreta');
-        }
+        if (!userDb)
+            throw new Error('User not found');
 
-        let token = jsonwebtoken.sign(userDb, 'minha-chave-secreta')
+        if (userDb.password !== user.password)
+            throw new Error('Incorrect password');
+
+        let token = this._generateToken(userDb);
         return token;
     }
 
     /**
      * 
+     * @param {User} user 
+     * @returns {Promise<string>} Token
+     */
+    async register(user) {
+        this._userValidator.prepareValidationForRegister(user);
+        let errors = this._userValidator.validate();
+        if (errors)
+            throw new Error(errors);
+
+        if (await this._userService.getByEmail(user.email))
+            throw new Error('User already exists');
+
+        let userDb = await this._userService.create(user);
+        let token = this._generateToken(userDb);
+        return token;
+    };
+
+    /**
+     * 
      * @param {string} token 
-     * @returns {jsonwebtoken.JwtPayload}
+     * @returns {void}
      */
     validateToken(token) {
         token = token.replace('Bearer ', '');
@@ -52,8 +73,24 @@ export class AuthService {
      */
     getCurrentUser() {
         if (!this._curerntUser)
-            throw new Error('Nenhum usuário logado');
-        
+            throw new Error('User not logged in');
+
         return this._curerntUser;
+    }
+
+    /**
+     * 
+     * @param {User} user 
+     * @returns {string} Token
+     * @description Gera um token para o usuário
+     */
+    _generateToken(user) {
+        /**@type {User} */
+        let newUser = {
+            id: user.id,
+            name: user.name,
+            email: user.email
+        };
+        return jsonwebtoken.sign(newUser, 'minha-chave-secreta');
     }
 }

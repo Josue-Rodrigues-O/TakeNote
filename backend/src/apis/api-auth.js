@@ -17,9 +17,20 @@ export class ApiAuth {
             let apiResponse;
             try {
                 let token = await this._authService.login(req.body);
-                apiResponse = new ApiResponse('success', 200, 'login realizado com sucesso', { token: token });
+                apiResponse = new ApiResponse('success', 200, 'Login successful', { token: token });
             } catch (error) {
-                apiResponse = new ApiResponse('error', 400, 'Falha ao realizar login', null, error.message);
+                apiResponse = new ApiResponse('error', 400, 'Failed to login', null, error.message);
+            }
+            res.send(apiResponse);
+        });
+
+        app.post('/register', async (req, res) => {
+            let apiResponse;
+            try {
+                let token = await this._authService.register(req.body);
+                apiResponse = new ApiResponse('success', 201, 'User registered successfully', { token: token });
+            } catch (error) {
+                apiResponse = new ApiResponse('error', 400, 'Failed to register user', null, error.message);
             }
             res.send(apiResponse);
         });
