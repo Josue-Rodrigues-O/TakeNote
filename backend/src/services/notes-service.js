@@ -1,6 +1,8 @@
 import sqlite3 from 'sqlite3';
 import { Note } from '../models/note.js';
 import { NoteRepository } from "../repositories/note-repository.js";
+import { NoteValidator } from '../validations/note-valiodator.js';
+import { UserService } from './users-service.js';
 
 export class NotesService {
 
@@ -11,6 +13,8 @@ export class NotesService {
     constructor(db) {
         if (!db) throw new Error('O parâmetro db é obrigatório');
         this._noteRepository = new NoteRepository(db);
+        this._noteValidator = new NoteValidator();
+        this._userService = new UserService(db);
     }
 
     /**
@@ -19,6 +23,15 @@ export class NotesService {
      * @returns {Promise<Note>}
      */
     async create(note, userId) {
+        this._noteValidator.prepareValidationForCreate(note);
+        let errors = this._noteValidator.validate();
+        if (errors)
+            throw new Error(errors);
+
+        let user = await this._userService.getById(userId);
+        if (!user)
+            throw new Error('User not found');
+
         return await this._noteRepository.create(note, userId);
     }
 
@@ -47,6 +60,15 @@ export class NotesService {
      * @returns {Promise<void>}
      */
     async update(id, note, userId) {
+        this._noteValidator.prepareValidationForUpdate(note);
+        let errors = this._noteValidator.validate();
+        if (errors)
+            throw new Error(errors);
+
+        let user = await this._userService.getById(userId);
+        if (!user)
+            throw new Error('User not found');
+
         return await this._noteRepository.update(id, note, userId);
     }
 
