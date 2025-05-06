@@ -1,0 +1,48 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: var(--color-primary);
+}
+
+.master {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: var(--form-auth-height);
+    width: 100%;
+    max-width: calc(var(--form-auth-width) *2);
+    background-color: white;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+    gap: 3rem;
+}
+
+.sub-container-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.container-form {
+    height: 100%;
+    width: 100%;
+    max-height: var(--form-auth-height);
+    max-width: var(--form-auth-width);
+    padding: 5rem;
+}
+
+hr {
+    height: 100%;
+    max-height: var(--form-auth-height);
+    border: 5px solid var(--color-primary);
+}
