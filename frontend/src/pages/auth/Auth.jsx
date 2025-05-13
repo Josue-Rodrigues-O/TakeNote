@@ -12,7 +12,7 @@ const Auth = () => {
     const password = form.get("login-password");
   };
 
-  const onClickRegister = function (event) {
+  const onClickRegister = async function (event) {
     event.preventDefault();
     const form = new FormData(event.target);
     const email = form.get("register-email");
@@ -23,6 +23,17 @@ const Auth = () => {
       alert("Passwords do not match!");
       return;
     }
+
+    let res = await fetch("http://localhost:3000/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: "4@gmail.com", password: "#fDer5tg" }),
+    });
+    let json = await res.json();
+    console.log(res);
+    console.log(json);
   };
 
   return (
